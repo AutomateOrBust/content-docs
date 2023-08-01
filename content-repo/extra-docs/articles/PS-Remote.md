@@ -4,32 +4,32 @@ title: Powershell Remoting - Configuration
 description: Overview of how to configure your Windows environment and XSOAR for the PowerShell Remoting integration. 
 ---
 
-PowerShell Remoting is a built-in feature in Windows hosts that enables connecting to hosts remotely in order to execute scripts and PowerShell commands. By using PowerShell Remoting, the SOC analyst or incident responder is able to connect to the Windows host in order to perform various tasks such as gathering data, remediating the host, move files to and from the host to XSOAR, and much more.
+PowerShell Remoting is a built-in feature in Windows hosts that enables connecting to hosts remotely to execute scripts and PowerShell commands. By using PowerShell Remoting, the SOC analyst or incident responder is able to connect to the Windows host to perform  tasks such as gathering data, remediating the host, moving files to and from the host to Cortex XSOAR, and much more.
 ## Pack Workflow
 Follow the instructions in this article to configure your Windows environment and the PowerShell Remoting integration.
 
-After configuring the integration you will be able to perform various tasks on Windows hosts, including running PowerShell commands and scripts, as well as gather forensic data.
+After configuring the integration you can perform various tasks on Windows hosts, including running PowerShell commands and scripts, as well as gathering forensic data.
 
 ## In This Pack
-The PowerShell Remoting content pack includes the following content item.
+The PowerShell Remoting content pack includes the following content item:
 ### Integrations
 The [PowerShell Remoting](https://xsoar.pan.dev/docs/reference/integrations/power-shell-remoting) integration.
 
 ## Before You Start
-Disclaimer: The integration was created and tested on Windows Server 2016 with PowerShell version 5.1.14393.3866. This article provides configuration instructions for this environment. Your required configuration may vary if using a different Windows Server version. Keep in mind that WinRM is entirely a Microsoft feature. We highly recommend you perform all actions listed here on test/staging environments prior to implementing on production environments. Also it's important to note that WinRM has security implications to consider as described [here](https://docs.microsoft.com/en-us/powershell/scripting/learn/remoting/winrmsecurity?view=powershell-7.1). 
+Disclaimer: The integration was created and tested on Windows Server 2016 with PowerShell version 5.1.14393.3866. This article provides configuration instructions for this environment. Your required configuration may vary if using a different Windows Server version. Keep in mind that WinRM is entirely a Microsoft feature. We highly recommend you perform all actions listed here on test/staging environments prior to implementing on production environments. Also note that WinRM has security implications to consider as described [here](https://docs.microsoft.com/en-us/powershell/scripting/learn/remoting/winrmsecurity?view=powershell-7.1). 
 
 The integration in its current version works with HTTP using NTLM authentication or HTTPS using basic authentication. PowerShell remoting does encrypt the session even on HTTP; however, the initial connection is unencrypted. If you decide to use basic authentication keep in mind it isn`t considered a secure authentication method; however, since the whole session is encrypted via SSL this compensates for the less secure authentication method.
 
 ### Network Settings
-Your XSOAR server will require access on ports 5985,5986 TCP
-to the hosts on which you want to run the integration. Take into consideration both the network firewall and the localhost firewall. If using the Windows firewall, make sure to create a relevant Group Policy Object (GPO) to allow traffic on the relevant ports. The configuration of the Windows firewall GPO is not in the scope of this article. The same goes for other local host firewall agents. For WinRM over HTTPS, open port 5986 TCP.
+Your XSOAR server requires access on ports 5985,5986 TCP
+to the hosts on which you want to run the integration. Take into consideration both the network firewall and the localhost firewall. If using the Windows firewall, create a relevant Group Policy Object (GPO) to allow traffic on the relevant ports. The configuration of the Windows firewall GPO is not within the scope of this article. The same goes for other local host firewall agents. For WinRM over HTTPS, open port 5986 TCP.
 
 ### Permissions
-The user who will execute the PowerShell remote commands on the endpoint will require local admin credentials. Potentially more granular permissions can be applied; however, this was not tested and therefore not in the scope of this article. For basic authentication make sure to use a local user and not a domain user.
+The user who executes the PowerShell remote commands on the endpoint requires local admin credentials. Potentially more granular permissions can be applied; however, this was not tested and therefore not within the scope of this article. For basic authentication, use a local user and not a domain user.
 
 
 ### Domain Settings
-For a Windows 2016 environment Active Directory domain, perform the following.
+For a Windows 2016 environment Active Directory domain, perform the following:
 
 On your 2016 Domain Controller, create a new OU (Organizational Unit) and move the computer accounts you wish to enable Powershell Remoting on to the new OU. 
 1. Open the Active Directory Users and Computers tool. 
@@ -60,10 +60,10 @@ Keep in mind that you can also use an existing OU. In this article we recommend 
    2. Select **Allow remote server management through WinRM**.
    3. Click **Edit policy setting**.
    4. Select **Enabled**.
-   4. Provide the IP or the XSOAR server. * is also a valid option but keep in mind that this will allow any address to initiate a WinRM connection to the affected hosts. 
+   4. Provide the IP of the XSOAR server. * is also a valid option but keep in mind that this allows any address to initiate a WinRM connection to the affected hosts. 
    5. Click **OK**.
    
-   This setting will enable Powershell remoting to the relevant hosts.
+   This setting enables Powershell remoting to the relevant hosts.
  !["Allow remote server management"](https://raw.githubusercontent.com/demisto/content-docs/057a6ef277e847775b6ee401d757a15088f97618/docs/doc_imgs/reference/PowershellRemoting/5-gpo.JPG "Allow remote server management")
 
 3.  Allow Basic Authentication. 
@@ -86,14 +86,14 @@ Configure this setting only if you want to use Basic authentication and not Nego
 
    3. Select **Define this policy setting**.
     
-   4. Select **Automatic** for the service startup mode. This setting will ensure that the WinRM service will be started automatically on the relevant hosts.
+   4. Select **Automatic** for the service startup mode. This setting ensures that the WinRM service is started automatically on the relevant hosts.
 
    5. Click ***OK**.
 
 !["WinRM service startup"](https://raw.githubusercontent.com/demisto/content-docs/de30769a3caa7d8d880563ff613857c7486fbcbf/docs/doc_imgs/reference/PowershellRemoting/8-gpo.JPG "WinRM service startup")
 
 ### Workgroup settings
-It is possible to configure the Powershell Remoting to work in a workgroup (non-domain) environment. The network settings and configuration are the same as described in the [Domain Settings](#domain-settings) section. To configure the host within the workgroup to accept PowerShell remote connections:
+You can configure the Powershell Remoting to work in a workgroup (non-domain) environment. The network settings and configuration are the same as described in the [Domain Settings](#domain-settings) section. To configure the host within the workgroup to accept PowerShell remote connections:
 
 1. For the host on which to enable PowerShell remoting, open the Powershell command prompt as an administrator and type **Enable-PSRemoting**.
 
@@ -111,20 +111,20 @@ To configure the integration, provide the following settings.
 | Field | Description|
 | --- | ---|
 | Domain | Provide the DNS domain name (suffix). For example, winrm.local. This allows the integration commands to work for hostnames so the user won't have to supply the FQDN of hosts when running the integration commands. |
-| DNS | Provide the IP address of the DNS server to provide name resolution. Make sure your XSOAR machine has access to the DNS server on port 53. |
+| DNS | Provide the IP address of the DNS server to provide name resolution. Verify your XSOAR machine has access to the DNS server on port 53. |
 | Username | Provide the username that has proper administrative privileges on the relevant hosts. If you are using Basic Authentication, provide a local user on the hosts and not a domain user. |
 | Password | Provide the password for the username provided. |
-| Test Hostname | This optional parameter tests if the integration can perform a connection to a the specified hostname. |
-| Use SSL | This option enables the PS remote session to be encrypted with SSL. In order to configure your environment to use SSL, see [Configure WinRM over HTTPS For a Domain Environment](#configure-winrm-over-https-for-a-domain-environment). Currently, SSL only works with basic authentication. |
-| Authentication Type | This option selects the authentication method used by the integration. Valid options are Basic which currently requires SSL and Negotiate which currently does not support SSL.|
+| Test Hostname | Optional parameter which tests if the integration can perform a connection to a the specified hostname. |
+| Use SSL | Enables the PS remote session to be encrypted with SSL. To configure your environment to use SSL, see [Configure WinRM over HTTPS For a Domain Environment](#configure-winrm-over-https-for-a-domain-environment). Currently, SSL only works with basic authentication. |
+| Authentication Type | Selects the authentication method used by the integration. Valid options are Basic, which currently requires SSL, and Negotiate which currently does not support SSL.|
 
 ## Testing the Integration
-When you click **Test** in the integration settings, it will perform the following on the host specified in the Test Hostname parameter.
-* Attempt to resolve the hostname specified.
-* Attempt to test connectivity via ports 5985 or 5986 (if SSL is enabled).
-* Attempt to open a PowerShell Remote session to the host.
+When you click **Test** in the integration settings, it performs the following on the host specified in the Test Hostname parameter.
+* Attempts to resolve the hostname specified.
+* Attempts to test connectivity via ports 5985 or 5986 (if SSL is enabled).
+* Attempts to open a PowerShell Remote session to the host.
 
-If the test fails, an error message will describe at which point an error occurred. Review the [Troubleshooting](#troubleshooting) section for further assistance.
+If the test fails, an error message describes at which point an error occurred. Review the [Troubleshooting](#troubleshooting) section for further assistance.
 
 ## Troubleshooting
 - [Host Troubleshooting](#host-troubleshooting)
@@ -135,7 +135,7 @@ If the test fails, an error message will describe at which point an error occurr
 - [Incident Ingestion Delays](#incident-ingestion-delays)
 
 ### Host Troubleshooting
-A common issues with regards to working with WinRM is that the network connectivity is not properly configured. 
+A common issues when working with WinRM is that the network connectivity is not properly configured. 
 
 To test network connectivity, check if the host is listening on the relevant port.
 For example, log in to one of the hosts and run the following from the command prompt:
@@ -149,7 +149,7 @@ or
 The result should show that the host is listening on the port.
 !["Netstat"](https://raw.githubusercontent.com/demisto/content-docs/de30769a3caa7d8d880563ff613857c7486fbcbf/docs/doc_imgs/reference/PowershellRemoting/9-trouble.JPG "Netstat")
 
-If the host is not listening on the port, make sure the host actually received the GPO that was previously configured.
+If the host is not listening on the port, verify the host actually received the GPO that was previously configured.
 
 From the command line run: 
 **gpresult /r -scope computer**
@@ -157,32 +157,32 @@ From the command line run:
 The GPO you created should appear under COMPUTER SETTINGS and the Applied Group Policy Objects.
 !["Applied GPO"](https://raw.githubusercontent.com/demisto/content-docs/de30769a3caa7d8d880563ff613857c7486fbcbf/docs/doc_imgs/reference/PowershellRemoting/10-trouble.JPG "Applied GPO")
 
-If the GPO does not appear, make sure that the computer account is in the correct OU. If not, make sure to move the computer account to the correct OU. Regardless if the computer account is in the OU, from the hosts command line run the **gpupdate /force** command.
+If the GPO does not appear, verify that the computer account is in the correct OU. If not, move the computer account to the correct OU. Regardless if the computer account is in the OU, from the hosts command line run the **gpupdate /force** command.
 !["Gpupdate /force"](https://raw.githubusercontent.com/demisto/content-docs/e017a13b2b37d1107c6cce33cb788163f716230a/docs/doc_imgs/reference/PowershellRemoting/11-trouble.JPG "Gpupdate /force")
 
 The result should show that the computer policy updated successfully.
 
-Keep in mind that port 5985 is for HTTP and port 5986 is for HTTPS. In order to configure HTTPS follow the configuration provided in the [Configure GPO](#configure-gpo) section in the [Appendix](#appendix).
+Keep in mind that port 5985 is for HTTP and port 5986 is for HTTPS. To configure HTTPS follow the configuration provided in the [Configure GPO](#configure-gpo) section in the [Appendix](#appendix).
 
 ### XSOAR Troubleshooting
-If when you click **Test** in the integration settings no network connection is available or the host is not resolved or the username/password permissions are not working, the relevant errors will be displayed. Resolve the issue as needed.
+If when you click **Test** in the integration settings no network connection is available or the host is not resolved or the username/password permissions do not work, the relevant errors are  displayed. Resolve the issue as needed.
 
 ### Name Resolution Troubleshooting
-If you receive the following error in the integration test, make sure that you provided a valid DNS server address in the integration settings and that the DNS server has a relevant DNS record for the host you want to resolve.
-Also make sure your XSOAR has network access on port 53 to the DNS server.
+If you receive the following error in the integration test, verify that you provided a valid DNS server address in the integration settings and that the DNS server has a relevant DNS record for the host you want to resolve.
+Also verify your XSOAR has network access on port 53 to the DNS server.
 !["DNS resolve error"](https://raw.githubusercontent.com/demisto/content-docs/e017a13b2b37d1107c6cce33cb788163f716230a/docs/doc_imgs/reference/PowershellRemoting/error1.jpg "DNS resolve error")
 ### Network Connectivity Troubleshooting
 If you receive the following error in the integration test, verify you have network access to the tested host from XSOAR on ports 5985 or 5986 accordingly. Check the network or host firewall logs and adjust the rules accordingly.
 !["Network access error"](https://raw.githubusercontent.com/demisto/content-docs/e017a13b2b37d1107c6cce33cb788163f716230a/docs/doc_imgs/reference/PowershellRemoting/error2.jpg "Network access error")
 ### Authentication Troubleshooting
-If you receive the following error in the integration test, check the provided username and password by attempting to connect to the tested host locally or via terminal services. Make sure that you are able to login with the provided credentials. If the login fails, verify that the username and password are correct or that the user has sufficient privileges on the host. If the password is wrong, reset it in the Active Directory.
+If you receive the following error in the integration test, check the provided username and password by attempting to connect to the tested host locally or via terminal services. Verify  you are able to log in with the provided credentials. If the login fails, verify that the username and password are correct or that the user has sufficient privileges on the host. If the password is wrong, reset it in the Active Directory.
 !["Session error"](https://raw.githubusercontent.com/demisto/content-docs/e017a13b2b37d1107c6cce33cb788163f716230a/docs/doc_imgs/reference/PowershellRemoting/error3.jpg "Session error")
 
-If you are using Basic Authentication, make sure to provide a local user and not a domain user.
+If you are using Basic Authentication, provide a local user and not a domain user.
 Another issue could be related to the Powershell remoting settings. Review the [Host Troubleshooting](#host-troubleshooting) section above accordingly.
 
 ### Incident Ingestion Delays
-You might come across cases where your incidents are pulled into XSOAR with some delay, in such cases we recommend checking that the given username does not include the domain in it, this should solve the delay problems.
+You might come across cases where your incidents are pulled into Cortex XSOAR with some delay. In these cases we recommend checking that the given username does not include the domain in it, as this can cause a delay.
 
 ## WinRM Useful Commands
 The following provides a list of useful WinRM commands.
@@ -201,7 +201,7 @@ The following provides a list of useful WinRM commands.
 ## Appendix
 
 ### Configure WinRM over HTTPS For a Domain Environment
-To enable PowerShell remote over SSL perform the following.
+To enable PowerShell remote over SSL perform the following:
 
 #### Configure Certificate Services
 
@@ -230,7 +230,7 @@ To enable PowerShell remote over SSL perform the following.
 
 !["CA settings"](https://raw.githubusercontent.com/demisto/content-docs/e017a13b2b37d1107c6cce33cb788163f716230a/docs/doc_imgs/reference/PowershellRemoting/23-cert.JPG "CA settings")
 
-8. Click **OK**. Your new template will now be saved.
+8. Click **OK**. Your new template is now saved.
 8. In the Certification Authority console, click **Certificate Templates** > **New** > **Certificate Template to Issue**.
 !["CA settings"](https://raw.githubusercontent.com/demisto/content-docs/e017a13b2b37d1107c6cce33cb788163f716230a/docs/doc_imgs/reference/PowershellRemoting/24-cert.JPG "CA settings")
 
@@ -249,7 +249,7 @@ To enable PowerShell remote over SSL perform the following.
 
 5. Click **OK**.
 
-6. Review the Certification Authority and make sure a certificate was issued for your host.
+6. Review the Certification Authority and verify a certificate was issued for your host.
 !["Issued certificates"](https://raw.githubusercontent.com/demisto/content-docs/e017a13b2b37d1107c6cce33cb788163f716230a/docs/doc_imgs/reference/PowershellRemoting/29-cert.JPG "Issued certificates")
 
 7. On the host on which you want to configure WinRM with HTTPS, open a command prompt as an administrator and type **winrm quickconfig -transport:https**.
@@ -259,4 +259,4 @@ To enable PowerShell remote over SSL perform the following.
 Since Microsoft doesn't currently have a GPO to set up the HTTPS listener, it is possible to create a login script that contains this command. Creation of a login script and deploying it via GPO is not covered in this article.
 
 #### Configure a Non-CA Environment 
-If you do not have a Certificate Authority in your environment it is possible to use self signed certificates. The configuration self signed certificates is not in the scope of this article.
+If you do not have a Certificate Authority in your environment it is possible to use self-signed certificates. The configuration of self-signed certificates is not within the scope of this article.
