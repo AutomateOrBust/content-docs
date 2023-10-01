@@ -60,10 +60,17 @@ demisto-sdk generate-docs -i Packs/Nmap/Integrations/NmapV2/NmapV2.yml --old-ver
 Though not advised, if you do not wish to create the version differences section in the documentation you can run the command with the `--skip-breaking-changes` flag.
 
 ## Images
-Images in the documentation should be added to the relevant pack under a `doc_files` or `doc_imgs` directory. Images may be included with **absolute** or **relative** URLs.
+Images in the documentation should be added to the relevant pack under a `doc_files` or `doc_imgs` directory. 
+
+Images are used in the following ways:
+- Pan Dev images: These images appear only in https://xsoar.pan.dev/ for integration/script/playbook readmes. They do not appear in the Cortex XSOAR/XSIAM product UI.
+
+- Marketplace images: These images are in pack readmes and integration description files 
+ and appear in both https://xsoar.pan.dev/ and in the Cortex XSOAR/XSIAM product UI. 
+
 
 ### Relative Image URLs
-When creating Markdown `README` documents for XSOAR entities (Playbooks, Integrations, Scripts, etc.), you may use relative URLs to documentation images stored in the `doc_files` or `doc_imgs` directories. To use relative URLs simply link the image using a relative path such as:
+When creating Markdown `README` documents for XSOAR/XSIAM entities (Playbooks, Integrations, Scripts, etc.) that appear in https://xsoar.pan.dev/ only, you may use relative URLs to documentation images stored in the `doc_files` or `doc_imgs` directories. To use relative URLs simply link the image using a relative path such as:
 ```
 ![Setup Account](./../../doc_files/create-account.png)
 ```
@@ -77,6 +84,9 @@ Make sure to view the `README.md` file in GitHub's web interface and validate th
 * G Suite Admin: https://github.com/demisto/content/blob/master/Packs/GSuiteAdmin/Integrations/GSuiteAdmin/README.md
 
 ### Absolute Image URLs
+
+When creating Markdown README documents for XSOAR/XSIAM entities (Playbooks, Integrations, Scripts, etc.) that appear in https://xsoar.pan.dev/ only, or pack readmes and integration description files that appear in both https://xsoar.pan.dev/ and in the Cortex XSOAR/XSIAM product UI, you may use relative URLs to documentation images.
+
 To obtain an absolute URL to an image from GitHub:
 
 * Commit the image and push to GitHub.
@@ -90,7 +100,7 @@ Embed the image in the README.md using a Markdown Image Link, such as:
 ```
 ![Playbook Image](https://github.com/demisto/content/raw/2d6e082cfb181f823e5b1446ae71e10537591ea6/Packs/AutoFocus/doc_files/AutoFocusPolling.png)
 ```
-Or if you want more control on the image (for example setting width dimension) you can use the HTML `<img>` tag, such as:
+For Playbooks, Integrations, Scripts, etc. that appear in https://xsoar.pan.dev/ only, if you want more control on the image (for example setting width dimension) you can use the HTML `<img>` tag, such as:
 
 ```
 <img width="500" src="https://github.com/demisto/content/raw/2d6e082cfb181f823e5b1446ae71e10537591ea6/Packs/AutoFocus/doc_files/AutoFocusPolling.png" />
