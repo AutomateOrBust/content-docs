@@ -25,6 +25,7 @@ You can now use the custom field in your incident type layouts.
 There are different types of Incident Fields. You should define the Field Type according to the information that the field will contain. Valid field types are:
 
 * Short Text (maximum of 60,000 characters)
+  *Note: The out of the box incident field 'name' has a character limit of 600, although it is technically classified as having a field type of short text. 
 * Long Text
 * Number - can contain any number. The default number is 0 thus this field cannot be mandatory as it has a default value. Any quantity can be used.
 * Boolean (checkbox)
